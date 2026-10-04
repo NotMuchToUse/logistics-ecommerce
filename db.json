@@ -2,10 +2,10 @@
   "users": [
     {
       "id": 1,
-      "email": "admin@singpost.com",
+      "email": "admin@quickship.com",
       "password": "password123",
       "role": "ADMIN",
-      "name": "Admin SingPost"
+      "name": "Admin QuickShip"
     },
     {
       "id": 2,

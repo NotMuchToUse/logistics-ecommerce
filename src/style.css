@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #e31b23;
+  --color-brand-strong: #b5121b;
+  --color-brand-light: #fff0f0;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply m-0 bg-white font-sans leading-normal text-gray-900;
+  }
+}
+
+@layer utilities {
+  .home-icon {
+    @apply h-5 w-5 shrink-0 object-contain;
+  }
+
+  .home-arrow-icon {
+    @apply h-4 w-4 shrink-0 object-contain;
+  }
+}
