@@ -62,8 +62,27 @@
       "name": "Bưu cục Trung tâm Quận 1",
       "address": "Số 2 Công xã Paris, Bến Nghé, Quận 1, TP.HCM",
       "postalCode": "700000",
-      "type": "POST_OFFICE",
-      "operatingHours": "07:00 - 19:00"
+      "operatingHours": "07:00 - 19:00",
+      "lat": 10.7798,
+      "lng": 106.699
+    },
+    {
+      "id": 2,
+      "name": "Bưu cục Tân Bình",
+      "address": "288 Hoàng Văn Thụ, Phường 4, Tân Bình, TP.HCM",
+      "postalCode": "72100",
+      "operatingHours": "07:30 - 18:30",
+      "lat": 10.7981,
+      "lng": 106.6576
+    },
+    {
+      "id": 3,
+      "name": "Bưu cục Bình Thạnh",
+      "address": "339 Bạch Đằng, Phường 15, Bình Thạnh, TP.HCM",
+      "postalCode": "72300",
+      "operatingHours": "07:00 - 18:00",
+      "lat": 10.8016,
+      "lng": 106.7028
     }
   ],
   "orders": []

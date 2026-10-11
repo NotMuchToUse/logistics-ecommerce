@@ -15,7 +15,7 @@ export const ShopHeader = () => {
         "div",
         {
           class:
-            "mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4",
+            "mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 max-sm:flex-wrap",
         },
 
         h(
@@ -37,7 +37,10 @@ export const ShopHeader = () => {
 
         h(
           "div",
-          { class: "flex items-center gap-3 max-sm:gap-2" },
+          {
+            class:
+              "flex items-center gap-3 max-sm:w-full max-sm:justify-between max-sm:gap-2",
+          },
 
           h(
             "a",

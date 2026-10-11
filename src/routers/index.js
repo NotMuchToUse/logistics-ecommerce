@@ -4,6 +4,7 @@ import { ShopPage } from "../pages/shop/shopPage.js";
 import { AuthPage } from "../pages/auth/authPage.js";
 import { Header } from "../layouts/header.js";
 import { ShopHeader } from "../layouts/shopHeader.js";
+import { locatePage } from "../pages/locate/locatePage.js";
 
 export const router = new Navigo("/", { hash: true });
 
@@ -55,6 +56,9 @@ export const initRouter = () => {
         createPlaceholderPage("Tìm bưu cục gần nhất", "Bản đồ bưu cục."),
         false,
       );
+    })
+    .on("/locate-us", () => {
+      renderView(locatePage(), false);
     })
     .on("/find-postal-code", () => {
       renderView(

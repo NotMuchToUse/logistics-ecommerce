@@ -1,4 +1,5 @@
 import { h } from "../../utils/dom.js";
+import { trackingItemService } from "../../services/tracking.js";
 import calculatorIcon from "lucide-static/icons/calculator.svg";
 import mapPinIcon from "lucide-static/icons/map-pin.svg";
 import mailboxIcon from "lucide-static/icons/mailbox.svg";
@@ -7,6 +8,116 @@ import packageCheckIcon from "lucide-static/icons/package-check.svg";
 import arrowRightIcon from "lucide-static/icons/arrow-right.svg";
 
 export const heroSection = () => {
+  const inputEl = h("input", {
+    type: "text",
+    placeholder: "Nhập mã vận đơn (VD: VN987654321)...",
+    class:
+      "min-w-0 w-full flex-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-inner shadow-slate-900/5 outline-none",
+  });
+
+  const resultBox = h("div", { class: "mt-3" });
+
+  const handleTracking = async () => {
+    const code = inputEl.value.trim();
+
+    if (!code) {
+      resultBox.innerHTML = "";
+      resultBox.appendChild(
+        h(
+          "p",
+          { class: "text-xs text-red-500 font-semibold" },
+          "⚠️ Vui lòng nhập mã bưu gửi!",
+        ),
+      );
+      return;
+    }
+
+    // Hiển thị chữ đang tìm trong lúc chờ API
+    resultBox.innerHTML = "";
+    resultBox.appendChild(
+      h("p", { class: "text-xs text-gray-500 italic" }, "🔍 Đang tra cứu..."),
+    );
+
+    const data = await trackingItemService(code);
+
+    // Xóa chữ đang tra cứu đi
+    resultBox.innerHTML = "";
+
+    // TRƯỜNG HỢP 1: Gõ bậy bạ không có trong DB
+    if (!data) {
+      resultBox.appendChild(
+        h(
+          "div",
+          {
+            class:
+              "rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-600 font-medium",
+          },
+          "❌ Không tìm thấy thông tin mã bưu gửi này!",
+        ),
+      );
+      return;
+    }
+
+    // TRƯỜNG HỢP 2: CÓ DATA -> VẼ GIAO DIỆN
+    // 2.1. Hộp tóm tắt thông tin bưu kiện
+    const infoBox = h(
+      "div",
+      {
+        class:
+          "flex flex-col gap-1 rounded-lg border border-blue-100 bg-blue-50/60 p-3 text-xs",
+      },
+      h(
+        "div",
+        { class: "font-bold text-brand-strong" },
+        `Mã vận đơn: ${data.id}`,
+      ),
+      h(
+        "div",
+        { class: "text-gray-600" },
+        `Gửi từ: ${data.sender} ➔ Đến: ${data.receiver}`,
+      ),
+      h("div", { class: "text-gray-500" }, `Dịch vụ: ${data.serviceType}`),
+    );
+
+    // 2.2. Danh sách Timeline các mốc sự kiện (Dùng .map lặp qua data.events)
+    const timelineBox = h(
+      "div",
+      {
+        class:
+          "mt-2 flex flex-col gap-3 border-l-2 border-brand-blue pl-3 ml-2 text-xs",
+      },
+      ...data.events.map((ev) =>
+        h(
+          "div",
+          { class: "relative flex flex-col" },
+          // Chấm tròn mốc thời gian
+          h("span", {
+            class:
+              "absolute -left-[19px] top-1 h-2.5 w-2.5 rounded-full bg-brand-blue ring-4 ring-white",
+          }),
+          h("span", { class: "font-bold text-gray-800" }, ev.status),
+          h("span", { class: "text-gray-600" }, ev.location),
+          h("span", { class: "text-[10px] text-gray-400 mt-0.5" }, ev.time),
+        ),
+      ),
+    );
+
+    // Nhét 2 hộp vừa vẽ vào resultBox
+    resultBox.appendChild(infoBox);
+    resultBox.appendChild(timelineBox);
+  };
+
+  const btnSearch = h(
+    "button",
+    {
+      type: "button",
+      class:
+        "min-w-[4.75rem] shrink-0 whitespace-nowrap rounded-md border border-brand-blue bg-brand-blue px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-px hover:opacity-95 cursor-pointer",
+      onclick: handleTracking,
+    },
+    "Tra cứu",
+  );
+
   return h(
     "section",
     { class: "bg-[#f4f6f8] py-8 lg:py-[3.25rem]" },
@@ -64,27 +175,16 @@ export const heroSection = () => {
               },
               "Tra cứu bưu gửi",
             ),
-
+            // +++++++++++ Cụm input tracking
             h(
               "div",
               { class: "flex min-w-0 rounded-lg border border-gray-300 p-1.5" },
-              h("input", {
-                type: "text",
-                placeholder: "Nhập tối đa 20 mã vận đơn...",
-                class:
-                  "min-w-0 w-full flex-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-inner shadow-slate-900/5 outline-none",
-              }),
-              h(
-                "button",
-                {
-                  type: "button",
-                  class:
-                    "min-w-[4.75rem] shrink-0 whitespace-nowrap rounded-md border border-brand-blue bg-brand-blue px-4 py-2 text-sm font-bold text-white transition hover:-translate-y-px hover:opacity-95",
-                },
-                "Tra cứu",
-              ),
+              inputEl,
+              btnSearch,
             ),
+            resultBox,
 
+            // ++++++++++
             h(
               "div",
               {
