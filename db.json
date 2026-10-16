@@ -56,6 +56,20 @@
       ]
     }
   ],
+  "shipping_rates": [
+    {
+      "id": 1,
+      "mailBasePrice": 15000,
+      "packages": {
+        "SMALL": 25000,
+        "MEDIUM": 40000,
+        "LARGE": 65000,
+        "OVERSIZE": 110000
+      },
+      "extraPerKg": 10000,
+      "overseasMultiplier": 4
+    }
+  ],
   "locations": [
     {
       "id": 1,

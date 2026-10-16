@@ -1,12 +1,34 @@
 import Navigo from "navigo";
+import { h } from "../utils/dom.js";
+
+import { Header } from "../layouts/header.js";
+import { ShopHeader } from "../layouts/shopHeader.js";
+
 import { HomePage } from "../pages/home/homePage.js";
 import { ShopPage } from "../pages/shop/shopPage.js";
 import { AuthPage } from "../pages/auth/authPage.js";
-import { Header } from "../layouts/header.js";
-import { ShopHeader } from "../layouts/shopHeader.js";
 import { locatePage } from "../pages/locate/locatePage.js";
+import { calculateRatesPage } from "../pages/calculate/calculateRatesPage.js";
 
 export const router = new Navigo("/", { hash: true });
+
+const createPlaceholderPage = (title, desc) => {
+  return h(
+    "div",
+    { class: "mx-auto w-full max-w-7xl space-y-4 px-4 py-20 text-center" },
+    h("h1", { class: "text-3xl font-bold" }, title),
+    h("p", { class: "text-gray-500" }, desc),
+    h(
+      "a",
+      {
+        href: "#/",
+        class:
+          "inline-block mt-4 px-6 py-2 border border-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-50",
+      },
+      "← Quay lại",
+    ),
+  );
+};
 
 const renderView = (pageComponent, isShop = false) => {
   const headerContainer = document.querySelector("#app-header");
@@ -35,7 +57,6 @@ export const initRouter = () => {
     .on("/login", () => {
       renderView(AuthPage(), true);
     })
-
     .on("/track", () => {
       renderView(
         createPlaceholderPage(
@@ -46,16 +67,7 @@ export const initRouter = () => {
       );
     })
     .on("/calculate-rates", () => {
-      renderView(
-        createPlaceholderPage("Tính cước vận chuyển", "Công cụ tính cước."),
-        false,
-      );
-    })
-    .on("/locate-us", () => {
-      renderView(
-        createPlaceholderPage("Tìm bưu cục gần nhất", "Bản đồ bưu cục."),
-        false,
-      );
+      renderView(calculateRatesPage(), false);
     })
     .on("/locate-us", () => {
       renderView(locatePage(), false);
@@ -76,23 +88,4 @@ export const initRouter = () => {
       renderView(createPlaceholderPage("404", "Không tìm thấy trang."), false);
     })
     .resolve();
-};
-
-import { h } from "../utils/dom.js";
-const createPlaceholderPage = (title, desc) => {
-  return h(
-    "div",
-    { class: "mx-auto w-full max-w-7xl space-y-4 px-4 py-20 text-center" },
-    h("h1", { class: "text-3xl font-bold" }, title),
-    h("p", { class: "text-gray-500" }, desc),
-    h(
-      "a",
-      {
-        href: "#/",
-        class:
-          "inline-block mt-4 px-6 py-2 border border-gray-300 rounded-lg text-sm font-semibold",
-      },
-      "← Quay lại",
-    ),
-  );
 };
